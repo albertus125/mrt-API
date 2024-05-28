@@ -106,7 +106,7 @@ func startCronScheduler() {
 	// Set up cron scheduler logic with timezone
 	c := cron.New(cron.WithLocation(loc))
 	// Schedule the cron job
-	_, cronErr := c.AddFunc("0 0 * * *", func() {
+	_, cronErr := c.AddFunc("* * * * *", func() {
 		// Cron job to run daily at midnight
 		if err := runScrapingTask(); err != nil {
 			log.Printf("Error running scraping task: %v", err)
