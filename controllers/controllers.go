@@ -27,7 +27,11 @@ func init() {
 func RegisterUser(c *gin.Context) {
 	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{
+			"data":    nil,
+			"message": "Data employee dengan username {username} telah disimpan",
+			"success": false,
+		})
 		return
 	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
