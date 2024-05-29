@@ -42,14 +42,19 @@ func RegisterUser(c *gin.Context) {
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "User registration failed"})
 		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"data":    nil,
+				"message": "Data employee dengan username {username} telah disimpan",
+				"success": false,
+			})
 		}
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"success": true,
+		"data":    user,
 		"message": "User berhasil registrasi",
-		"data":    user})
+		"success": true,
+	})
 }
 
 func LoginUser(c *gin.Context) {
@@ -98,9 +103,10 @@ func LoginUser(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"success": true,
+		"data":    tokenString,
 		"message": "login success",
-		"data":    tokenString})
+		"success": true,
+	})
 }
 
 func CreateReview(c *gin.Context) {
