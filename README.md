@@ -116,9 +116,8 @@ To access these api endpoints, you need to create an account and use the token p
     ```json
     {
     "message": "login success",
-    "success": true
-    
-      "token": "your_jwt_token"
+    "success": true,
+    "token": "your_jwt_token"
     }
     ```
   - **Get All review**
@@ -136,11 +135,12 @@ To access these api endpoints, you need to create an account and use the token p
             "rating": 4.5,
             "comment": "Aplikasi sangat membantu!",
             "created_at": "2024-05-29T13:18:08.209673Z"
-        }
+        },
+        ...
       ],
       "message": "berhasil mengambil seluruh data review",
       "succes": true
-      ...
+      
     ]
     ```
 Include the token in the Authorization header for all subsequent api requests.
