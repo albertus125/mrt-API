@@ -46,7 +46,10 @@ func RegisterUser(c *gin.Context) {
 		}
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "User registered"})
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "User berhasil registrasi",
+		"data":    user})
 }
 
 func LoginUser(c *gin.Context) {
@@ -94,7 +97,10 @@ func LoginUser(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not generate token"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"token": tokenString})
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "login success",
+		"data":    tokenString})
 }
 
 func CreateReview(c *gin.Context) {
@@ -121,7 +127,9 @@ func CreateReview(c *gin.Context) {
 		return
 	}
 	if !userExists {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "user does not exist"})
+		c.JSON(http.StatusBadRequest, gin.H{
+			"succes":  false,
+			"message": "user tidak ditemukan"})
 		return
 	}
 
@@ -131,7 +139,10 @@ func CreateReview(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusCreated, review)
+	c.JSON(http.StatusCreated, gin.H{
+		"succes":  true,
+		"message": "review berhasil ditambahkan",
+		"data":    review})
 }
 
 func GetAllReviews(c *gin.Context) {
@@ -156,8 +167,12 @@ func GetAllReviews(c *gin.Context) {
 		}
 		reviews = append(reviews, review)
 	}
-	c.JSON(http.StatusOK, reviews)
+	c.JSON(http.StatusOK, gin.H{
+		"succes":  true,
+		"message": "berhasil mengambil seluruh data review",
+		"data":    reviews})
 }
+
 func GetAllSchedules(c *gin.Context) {
 	db := database.GetDB()
 	if db == nil {
@@ -173,7 +188,7 @@ func GetAllSchedules(c *gin.Context) {
 		c.JSON(http.StatusOK, cachedData)
 		return
 	}
-	rows, err := db.Query("SELECT * FROM schedules")
+	rows, err := db.Query("SELECT id, station_id, stasiun_name, arah, to_char(jadwal, 'HH24:MI') as jadwal FROM schedules")
 	if err != nil {
 		log.Printf("Error fetching schedules: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching data"})

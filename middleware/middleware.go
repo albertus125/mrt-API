@@ -68,7 +68,7 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 		var exists bool
-		err = database.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE id = $1)", claims.UserID).Scan(&exists)
+		err = database.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE id = $1 AND username = $2)", claims.UserID, claims.Username).Scan(&exists)
 		if err != nil || !exists {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "user does not exist"})
 			c.Abort()

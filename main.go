@@ -60,12 +60,20 @@ func main() {
 	protected := router.Group("/api")
 	protected.Use(middleware.JWTAuthMiddleware())
 	{
+		//these are for the website
 		protected.GET("/secure_endpoint", secureEndpointHandler)
 		protected.GET("/stasiun", controllers.GetAllStasiun)
-		protected.GET("/schedules/:id/:arah", controllers.GetSchedulesByIDAndTrip)
-		protected.GET("/schedules/:id", controllers.GetSchedulesByID)
 		protected.GET("/schedules", controllers.GetAllSchedules)
+		protected.GET("/schedules/:id", controllers.GetSchedulesByID)
+		protected.GET("/schedules/:id/:arah", controllers.GetSchedulesByIDAndTrip)
 		protected.POST("/reviews", controllers.CreateReview)
+
+		//theses below are for sanber
+
+		protected.GET("/v1/stasiun", controllers.GetAllStasiunV1)
+		protected.GET("/v1/schedules", controllers.GetAllSchedulesV1)
+		protected.GET("/v1/schedules/:id", controllers.GetSchedulesByStationIDV1)
+		protected.GET("/v1/schedules/:id/:arah", controllers.GetSchedulesByIDAndTripV1)
 	}
 
 	// Serve HTTP requests with Gin router
