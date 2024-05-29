@@ -20,7 +20,7 @@ func GetAllSchedulesV1(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 		return
 	}
-	cacheKey := "all_schedules"
+	cacheKey := "all_schedulesv1"
 	cachedData, found := c.Get(cacheKey)
 	if found {
 		log.Println("fetching cached data")

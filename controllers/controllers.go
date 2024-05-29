@@ -29,7 +29,7 @@ func RegisterUser(c *gin.Context) {
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"data":    nil,
-			"message": "Data employee dengan username {username} telah disimpan",
+			"message": "Data user dengan username " + user.Username + " telah disimpan",
 			"success": false,
 		})
 		return
