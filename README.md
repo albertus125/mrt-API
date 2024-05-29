@@ -60,7 +60,7 @@ MRT-api is a RESTful api service for managing and retrieving Jakarta MRT schedul
 
 2. The api will be available at `http://localhost:8080`.
 
-### api Availability
+### API Availability
 - **Local Environment**: The api will be available at `http://localhost:8080`.
 - **Production Environment**: The api is also available at `https://mrt-api/-production.up.railway.app/api/v1`.
 ## api Endpoints
