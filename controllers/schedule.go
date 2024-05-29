@@ -25,7 +25,11 @@ func GetAllSchedulesV1(c *gin.Context) {
 	if found {
 		log.Println("fetching cached data")
 		c.Header("X-Data-Source", "Cache")
-		c.JSON(http.StatusOK, cachedData)
+		c.JSON(http.StatusOK, gin.H{
+			"success": true,
+			"message": "Sukses mengambil seluruh data schedules",
+			"data":    cachedData,
+		})
 		return
 	}
 	rows, err := db.Query("SELECT id, station_id, stasiun_name, arah, to_char(jadwal, 'HH24:MI') as jadwal FROM schedules")
@@ -74,7 +78,11 @@ func GetSchedulesByStationIDV1(c *gin.Context) {
 
 	if cachedData, found := cacheInstance.Get(cacheKey); found {
 		c.Header("x-Data-Source", "cache")
-		c.JSON(http.StatusOK, cachedData)
+		c.JSON(http.StatusOK, gin.H{
+			"success": true,
+			"message": "Data schedule dengan stasiun id" + stationIDStr + "berhasil diambil",
+			"data":    cachedData,
+		})
 		return
 	}
 
@@ -100,12 +108,20 @@ func GetSchedulesByStationIDV1(c *gin.Context) {
 		}
 		schedules = append(schedules, schedule)
 	}
+	if len(schedules) == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "Data schedule dengan stasiun id " + stationIDStr + " tidak ditemukan",
+			"data":    nil,
+		})
+		return
+	}
 	cacheInstance.Set(cacheKey, schedules, 6*time.Hour)
 
 	c.Header("X-Data-Source", "API")
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"message": "Data schedule dengan stasiun id" + stationIDStr + "berhasil diambil",
+		"message": "Data schedule dengan stasiun id " + stationIDStr + " berhasil diambil",
 		"data":    schedules,
 	})
 }
@@ -119,7 +135,11 @@ func GetSchedulesByIDAndTripV1(c *gin.Context) {
 	if cachedData, found := cacheInstance.Get(cacheKey); found {
 		if schedules, ok := cachedData.([]models.Schedule); ok {
 			c.Header("X-Data-Source", "Cache")
-			c.JSON(http.StatusOK, schedules) // Return cached data
+			c.JSON(http.StatusOK, gin.H{
+				"success": true,
+				"message": "Data schedule dengan stasiun ID: " + stationIDStr + " dan arah: " + arah + " berhasil diambil",
+				"data":    schedules,
+			}) // Return cached data
 			return
 		}
 	}
@@ -162,7 +182,13 @@ func GetSchedulesByIDAndTripV1(c *gin.Context) {
 			uniqueSchedules = append(uniqueSchedules, s)
 		}
 	}
-
+	if len(uniqueSchedules) == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"success": false,
+			"message": "Data schedule dengan stasiun id " + stationIDStr + "dan arah " + arah + " tidak ditemukan",
+			"data":    nil,
+		})
+	}
 	// Cache the fetched schedules
 	cacheInstance.Set(cacheKey, uniqueSchedules, 6*time.Hour)
 
