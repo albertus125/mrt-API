@@ -69,7 +69,9 @@ func LoginUser(c *gin.Context) {
 	err := database.DB.QueryRow(query, loginDetails.Username).Scan(&user.ID, &user.Username, &user.Password, &user.Role)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"success": false,
+				"error":   "Invalid credentials"})
 			return
 		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

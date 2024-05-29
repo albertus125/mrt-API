@@ -109,7 +109,7 @@ func GetSchedulesByStationIDV1(c *gin.Context) {
 		schedules = append(schedules, schedule)
 	}
 	if len(schedules) == 0 {
-		c.JSON(http.StatusOK, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"data":    nil,
 			"message": "Data schedule dengan stasiun id " + stationIDStr + " tidak ditemukan",
 			"success": false,
@@ -179,9 +179,9 @@ func GetSchedulesByIDAndTripV1(c *gin.Context) {
 		}
 	}
 	if len(uniqueSchedules) == 0 {
-		c.JSON(http.StatusOK, gin.H{
+		c.JSON(http.StatusInternalServerError, gin.H{
 			"data":    nil,
-			"message": "Data schedule dengan stasiun id " + stationIDStr + "dan arah " + arah + " tidak ditemukan",
+			"message": "Data schedule dengan stasiun ID: " + stationIDStr + " dan arah " + arah + " tidak ditemukan",
 			"success": false,
 		})
 	}
