@@ -184,6 +184,7 @@ func GetSchedulesByIDAndTripV1(c *gin.Context) {
 			"message": "Data schedule dengan stasiun ID: " + stationIDStr + " dan arah " + arah + " tidak ditemukan",
 			"success": false,
 		})
+		return
 	}
 	// Cache the fetched schedules
 	cacheInstance.Set(cacheKey, uniqueSchedules, 6*time.Hour)
