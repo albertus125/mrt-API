@@ -48,7 +48,7 @@ func RegisterUser(c *gin.Context) {
 		} else {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"data":    nil,
-				"message": "Data employee dengan username {username} telah disimpan",
+				"message": "Data employee dengan username " + user.Username + " telah disimpan",
 				"success": false,
 			})
 		}
@@ -75,7 +75,7 @@ func LoginUser(c *gin.Context) {
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"success": false,
-				"error":   "Invalid credentials"})
+				"message": "Username atau Password salah"})
 			return
 		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -83,7 +83,9 @@ func LoginUser(c *gin.Context) {
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginDetails.Password)); err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"success": false,
+			"message": "Username atau Password salah"})
 		return
 	}
 	var expirationTime time.Time
