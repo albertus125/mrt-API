@@ -105,7 +105,7 @@ func GetSchedulesByStationIDV1(c *gin.Context) {
 	c.Header("X-Data-Source", "API")
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"message": `Data schedule dengan stasiun id ${schedule.ID} berhasil diambil`,
+		"message": "Data schedule dengan stasiun id" + stationIDStr + "berhasil diambil",
 		"data":    schedules,
 	})
 }
@@ -170,7 +170,7 @@ func GetSchedulesByIDAndTripV1(c *gin.Context) {
 	c.Header("X-Data-Source", "API")
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"message": `Data schedule dengan stasiun ID: ${s.StasiunID} dan arah:${s.Arah} berhasil diambil`,
+		"message": "Data schedule dengan stasiun ID: " + stationIDStr + " dan arah: " + arah + " berhasil diambil",
 		"data":    uniqueSchedules,
 	}) // Return the fetched schedules
 }

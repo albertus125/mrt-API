@@ -54,9 +54,9 @@ func main() {
 	// Set up Gin router
 	router := gin.Default()
 	router.Use(middleware.CORSMidleware()) // Apply CORS middleware
-	router.POST("/api/register", controllers.RegisterUser)
-	router.POST("/api/login", controllers.LoginUser)
-	router.GET("/api/reviews", controllers.GetAllReviews)
+	router.POST("/api/v1/register", controllers.RegisterUser)
+	router.POST("/api/v1/login", controllers.LoginUser)
+	router.GET("/api/v1/reviews", controllers.GetAllReviews)
 	protected := router.Group("/api")
 	protected.Use(middleware.JWTAuthMiddleware())
 	{
@@ -73,7 +73,7 @@ func main() {
 		protected.GET("/v1/schedules", controllers.GetAllSchedulesV1)
 		protected.GET("/v1/schedules/:id", controllers.GetSchedulesByStationIDV1)
 		protected.GET("/v1/schedules/:id/:arah", controllers.GetSchedulesByIDAndTripV1)
-		protected.POST("/reviews", controllers.CreateReview)
+		protected.POST("/v1/reviews", controllers.CreateReview)
 	}
 
 	// Serve HTTP requests with Gin router
