@@ -50,6 +50,7 @@ func GetAllStasiunV1(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "Berhasil mengambil semua data stasiun",
-		"data":    stasiun})
+		"data":    stasiun,
+	})
 
 }

@@ -66,14 +66,14 @@ func main() {
 		protected.GET("/schedules", controllers.GetAllSchedules)
 		protected.GET("/schedules/:id", controllers.GetSchedulesByID)
 		protected.GET("/schedules/:id/:arah", controllers.GetSchedulesByIDAndTrip)
-		protected.POST("/reviews", controllers.CreateReview)
 
-		//theses below are for sanber
+		//these below are for sanber
 
 		protected.GET("/v1/stasiun", controllers.GetAllStasiunV1)
 		protected.GET("/v1/schedules", controllers.GetAllSchedulesV1)
 		protected.GET("/v1/schedules/:id", controllers.GetSchedulesByStationIDV1)
 		protected.GET("/v1/schedules/:id/:arah", controllers.GetSchedulesByIDAndTripV1)
+		protected.POST("/reviews", controllers.CreateReview)
 	}
 
 	// Serve HTTP requests with Gin router

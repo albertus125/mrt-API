@@ -58,7 +58,8 @@ func GetAllSchedulesV1(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "Sukses mengambil seluruh data schedules",
-		"data":    schedules})
+		"data":    schedules,
+	})
 }
 
 func GetSchedulesByStationIDV1(c *gin.Context) {
@@ -105,7 +106,8 @@ func GetSchedulesByStationIDV1(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": `Data schedule dengan stasiun id ${schedule.ID} berhasil diambil`,
-		"data":    schedules})
+		"data":    schedules,
+	})
 }
 
 func GetSchedulesByIDAndTripV1(c *gin.Context) {
@@ -169,5 +171,6 @@ func GetSchedulesByIDAndTripV1(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": `Data schedule dengan stasiun ID: ${s.StasiunID} dan arah:${s.Arah} berhasil diambil`,
-		"data":    uniqueSchedules}) // Return the fetched schedules
+		"data":    uniqueSchedules,
+	}) // Return the fetched schedules
 }
