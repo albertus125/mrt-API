@@ -135,7 +135,11 @@ func GetSchedulesByIDAndTripV1(c *gin.Context) {
 	if cachedData, found := cacheInstance.Get(cacheKey); found {
 		if schedules, ok := cachedData.([]models.Schedule); ok {
 			c.Header("X-Data-Source", "Cache")
-			c.JSON(http.StatusOK, schedules) // Return cached data
+			c.JSON(http.StatusOK, gin.H{
+				"success": true,
+				"message": "Data schedule dengan stasiun ID: " + stationIDStr + " dan arah: " + arah + " berhasil diambil",
+				"data":    schedules,
+			})
 			return
 		}
 	}
@@ -179,7 +183,7 @@ func GetSchedulesByIDAndTripV1(c *gin.Context) {
 		}
 	}
 	if len(uniqueSchedules) == 0 {
-		c.JSON(http.StatusInternalServerError, gin.H{
+		c.JSON(http.StatusNotFound, gin.H{
 			"data":    nil,
 			"message": "Data schedule dengan stasiun ID: " + stationIDStr + " dan arah " + arah + " tidak ditemukan",
 			"success": false,
