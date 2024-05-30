@@ -91,8 +91,8 @@ To access these api endpoints, you need to create an account and use the token p
     {
     "data": {
         "id": 10,
-        "username": "albertus",
-        "password": "$2a$10$kngHEtcFeErMALlHfbXG.OlAaKtBsPjJ2ae/kklqbGEGjAxr7HT06",
+        "username": "user1",
+        "password": "your_jwt_token",
         "role": ""
     },
     "message": "User berhasil registrasi",
