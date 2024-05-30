@@ -1,6 +1,9 @@
 # MRT-api
 
-MRT-api is a RESTful api service for managing and retrieving Jakarta MRT schedules, user authentication, and user reviews.
+An API for retrieving the Jakarta MRT schedule. This API is primarily utilized by the [website] (https://cek-mrt.vercel.app/).
+
+### How does it works?
+This API uses a daily cron job, executed at midnight,  to scrape the Jakarta MRT schedule from the official PT.MRT JAKARTA website using Go library package [gocolly](github.com/gocolly/colly"). Subsequently, the data is processed, stored in a PostgreSQL database and cached using [go-cache](github.com/patrickmn/go-cache).
 
 ## Table of Contents
 
@@ -8,7 +11,7 @@ MRT-api is a RESTful api service for managing and retrieving Jakarta MRT schedul
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
-- [api Endpoints](#api-endpoints)
+- [API Endpoints](#api-endpoints)
 - [License](#license)
 
 ## Features
@@ -63,7 +66,7 @@ MRT-api is a RESTful api service for managing and retrieving Jakarta MRT schedul
 ### API Availability
 - **Local Environment**: The api will be available at `http://localhost:8080`.
 - **Production Environment**: The api is also available at `https://mrt-api/-production.up.railway.app/api/v1`.
-## api Endpoints
+## API Endpoints
 To access these api endpoints, you need to create an account and use the token provided in the Authorization header. Follow these steps:
 ### Authentication
 
@@ -217,11 +220,11 @@ Example request:
       "success": true,
       "data": [
         {
-            "id": 54350,
+            "id": 54493,
             "station_id": 21,
             "stasiun_name": "Stasiun Fatmawati Indomaret",
-            "arah": "Arah Lebak Bulus",
-            "jadwal": "05:32"
+            "arah": "Arah Bundaran HI",
+            "jadwal": "05:03"
         },
       ...
       ]
