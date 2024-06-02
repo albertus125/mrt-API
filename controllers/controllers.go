@@ -320,6 +320,16 @@ func GetSchedulesByIDAndTrip(c *gin.Context) {
 	arah := c.Param("arah")
 	cacheKey := fmt.Sprintf("%s_%s", stationIDStr, arah)
 
+	//load asia/jakarta
+	loc, err := time.LoadLocation("Asia/Jakarta")
+	if err != nil {
+		fmt.Println("Error loading location:", err)
+		return
+	}
+
+	//get current time in the jakarta
+	now := time.Now().In(loc)
+
 	// Check if data is cached
 	if cachedData, found := cacheInstance.Get(cacheKey); found {
 		if schedules, ok := cachedData.([]models.Schedule); ok {
@@ -336,16 +346,31 @@ func GetSchedulesByIDAndTrip(c *gin.Context) {
 		return
 	}
 
-	rows, err := db.Query(`
+	var rows *sql.Rows
+
+	if now.Format("Monday") == "Saturday" || now.Format("Monday") == "Sunday" {
+		rows, err := db.Query(`
+		SELECT id, station_id, stasiun_name, arah, to_char(jadwal, 'HH24:MI') as jadwal 
+		FROM schedules 
+		WHERE  station_id = $1 AND arah = $2 AND stasiun_name = ''`, stationIDStr, arah)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		defer rows.Close()
+
+	} else {
+		rows, err := db.Query(`
 		SELECT id, station_id, stasiun_name, arah, to_char(jadwal, 'HH24:MI') as jadwal 
 		FROM schedules 
 		WHERE  station_id = $1 AND arah = $2 AND stasiun_name <> ''
 	`, stationIDStr, arah)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		defer rows.Close()
 	}
-	defer rows.Close()
 
 	// Process rows and filter out duplicates
 	seen := make(map[int]bool)
