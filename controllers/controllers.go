@@ -347,31 +347,26 @@ func GetSchedulesByIDAndTrip(c *gin.Context) {
 	}
 
 	var rows *sql.Rows
+	var queryErr error
 
-	if now.Format("Monday") == "Saturday" || now.Format("Monday") == "Sunday" {
-		rows, err := db.Query(`
+	if now.Weekday() == time.Saturday || now.Weekday() == time.Sunday {
+		rows, queryErr = db.Query(`
 		SELECT id, station_id, stasiun_name, arah, to_char(jadwal, 'HH24:MI') as jadwal 
 		FROM schedules 
 		WHERE  station_id = $1 AND arah = $2 AND stasiun_name = ''`, stationIDStr, arah)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		defer rows.Close()
-
 	} else {
-		rows, err := db.Query(`
+		rows, queryErr = db.Query(`
 		SELECT id, station_id, stasiun_name, arah, to_char(jadwal, 'HH24:MI') as jadwal 
 		FROM schedules 
 		WHERE  station_id = $1 AND arah = $2 AND stasiun_name <> ''
 	`, stationIDStr, arah)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		defer rows.Close()
 	}
 
+	if queryErr != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": queryErr.Error()})
+		return
+	}
+	defer rows.Close()
 	// Process rows and filter out duplicates
 	seen := make(map[int]bool)
 	var uniqueSchedules []models.Schedule
