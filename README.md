@@ -1,6 +1,6 @@
 # MRT-api
 
-An API for retrieving the Jakarta MRT schedule. This API is primarily utilized by the [website](https://cek-mrt.vercel.app/).
+An API for retrieving the Jakarta MRT schedule. This API is primarily utilized by the [website]((https://www.cekmrt.xyz/)
 
 ### How does it works?
 This API uses a daily cron job, executed at midnight,  to scrape the Jakarta MRT schedule from the official PT.MRT JAKARTA website using Go library package [gocolly](github.com/gocolly/colly"). Subsequently, the data is processed, stored in a PostgreSQL database and cached using [go-cache](github.com/patrickmn/go-cache).
