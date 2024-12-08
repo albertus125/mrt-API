@@ -43,7 +43,7 @@ func init() {
 		log.Fatalf("Error initializing database tables: %v", err)
 	}
 
-	// Ensure the /data directory exists
+	// Ensure the /tmp directory exists
 	ensureDataDirectory()
 
 	// Start cron scheduler
@@ -135,7 +135,7 @@ func runScrapingTask() error {
 	log.Println("Running daily scraping task...")
 
 	// Cleanup old csv files
-	if err := scraping.CleanupOldCSVFiles("/data", 0); err != nil {
+	if err := scraping.CleanupOldCSVFiles("/tmp", 0); err != nil {
 		return fmt.Errorf("error cleaning up CSV files: %v", err)
 	}
 
@@ -170,7 +170,7 @@ func runScrapingTask() error {
 }
 
 func ensureDataDirectory() {
-	dataDir := "/data"
+	dataDir := "/tmp"
 	if _, err := os.Stat(dataDir); os.IsNotExist(err) {
 		err := os.MkdirAll(dataDir, os.ModePerm)
 		if err != nil {
